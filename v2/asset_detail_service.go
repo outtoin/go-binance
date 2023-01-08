@@ -205,7 +205,7 @@ type ConvertTransferResponse struct {
 func (s *ConvertTransferService) Do(ctx context.Context) (res ConvertTransferResponse, err error) {
 	r := &request{
 		method:   http.MethodPost,
-		endpoint: "/sapi/v1/asset/convert",
+		endpoint: "/sapi/v1/asset/convert-transfer",
 		secType:  secTypeSigned,
 	}
 	r.setParam("clientTranId", s.clientTranId)
