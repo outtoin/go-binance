@@ -968,3 +968,8 @@ func (c *Client) NewSubAccountListService() *SubAccountListService {
 func (c *Client) NewGetUserAsset() *GetUserAssetService {
 	return &GetUserAssetService{c: c}
 }
+
+// NewConvertTransferService init the service to convert transfer
+func (c *Client) NewConvertTransferService() *ConvertTransferService {
+	return &ConvertTransferService{c: c}
+}
