@@ -160,3 +160,67 @@ func (s *GetUserAssetService) Do(ctx context.Context) (res []UserAssetRecord, er
 	err = json.Unmarshal(data, &res)
 	return
 }
+
+// ConvertTransferService convert asset (BUSD <-> USDT)
+// See https://binance-docs.github.io/apidocs/spot/en/#busd-convert-trade
+type ConvertTransferService struct {
+	c            *Client
+	clientTranId string
+	asset        string
+	amount       int64
+	targetAsset  string
+	accountType  *string
+}
+
+func (s *ConvertTransferService) ClientTranId(clientTranId string) *ConvertTransferService {
+	s.clientTranId = clientTranId
+	return s
+}
+
+func (s *ConvertTransferService) Asset(asset string) *ConvertTransferService {
+	s.asset = asset
+	return s
+}
+
+func (s *ConvertTransferService) Amount(amount int64) *ConvertTransferService {
+	s.amount = amount
+	return s
+}
+
+func (s *ConvertTransferService) TargetAsset(targetAsset string) *ConvertTransferService {
+	s.targetAsset = targetAsset
+	return s
+}
+
+func (s *ConvertTransferService) AccountType(accountType string) *ConvertTransferService {
+	s.accountType = &accountType
+	return s
+}
+
+type ConvertTransferResponse struct {
+	TranId int64  `json:"tranId"`
+	Status string `json:"status"`
+}
+
+func (s *ConvertTransferService) Do(ctx context.Context) (res ConvertTransferResponse, err error) {
+	r := &request{
+		method:   http.MethodPost,
+		endpoint: "/sapi/v1/asset/convert",
+		secType:  secTypeSigned,
+	}
+	r.setParam("clientTranId", s.clientTranId)
+	r.setParam("asset", s.asset)
+	r.setParam("amount", s.amount)
+	r.setParam("targetAsset", s.targetAsset)
+	if s.accountType != nil {
+		r.setParam("accountType", *s.accountType)
+	}
+
+	data, err := s.c.callAPI(ctx, r)
+	if err != nil {
+		return
+	}
+
+	err = json.Unmarshal(data, &res)
+	return
+}
