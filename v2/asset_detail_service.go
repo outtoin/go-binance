@@ -167,7 +167,7 @@ type ConvertTransferService struct {
 	c            *Client
 	clientTranId string
 	asset        string
-	amount       int64
+	amount       string
 	targetAsset  string
 	accountType  *string
 }
@@ -182,7 +182,7 @@ func (s *ConvertTransferService) Asset(asset string) *ConvertTransferService {
 	return s
 }
 
-func (s *ConvertTransferService) Amount(amount int64) *ConvertTransferService {
+func (s *ConvertTransferService) Amount(amount string) *ConvertTransferService {
 	s.amount = amount
 	return s
 }
